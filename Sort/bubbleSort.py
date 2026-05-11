@@ -1,10 +1,18 @@
-def bubbleSort(customList):
-    for i in range(len(customList)-1):
-        for j in range(len(customList)-i-1):
-            if customList[j] > customList[j+1]:
-                customList[j], customList[j+1] = customList[j+1], customList[j]
-    print(customList)
+def bubble_sort(custom_list):
+    """
+    Performs bubble sort to sort a list in ascending order.
+
+    Args:
+        custom_list (list): The list to be sorted.
+    """
+    n = len(custom_list)
+    for i in range(n - 1):
+        for j in range(n - i - 1):
+            if custom_list[j] > custom_list[j + 1]:
+                custom_list[j], custom_list[j + 1] = custom_list[j + 1], custom_list[j]
+    print(custom_list)
 
 
-list = [2,6,8,3,1,5,9,7]
-bubbleSort(list)
+if __name__ == "__main__":
+    test_list = [2, 6, 8, 3, 1, 5, 9, 7]
+    bubble_sort(test_list)

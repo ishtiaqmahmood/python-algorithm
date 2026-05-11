@@ -1,128 +1,157 @@
-import QueueLinkedList as queue
+from collections import deque
 
 class BSTNode:
+    """
+    A class to represent a node in a Binary Search Tree.
+    """
     def __init__(self, data):
         self.data = data
-        self.leftChild = None
-        self.rightChild = None
+        self.left_child = None
+        self.right_child = None
 
-def insertNode(rootNode, nodeValue):
-    if rootNode.data == None:
-        rootNode.data = nodeValue
-    elif nodeValue <= rootNode.data:
-        if rootNode.leftChild is None:
-            rootNode.leftChild = BSTNode(nodeValue)
+
+def insert_node(root_node, node_value):
+    """
+    Inserts a node with node_value into the BST.
+    """
+    if root_node.data is None:
+        root_node.data = node_value
+    elif node_value <= root_node.data:
+        if root_node.left_child is None:
+            root_node.left_child = BSTNode(node_value)
         else:
-            insertNode(rootNode.leftChild, nodeValue)
+            insert_node(root_node.left_child, node_value)
     else:
-        if rootNode.rightChild is None:
-            rootNode.rightChild = BSTNode(nodeValue)
+        if root_node.right_child is None:
+            root_node.right_child = BSTNode(node_value)
         else:
-            insertNode(rootNode.rightChild, nodeValue)
+            insert_node(root_node.right_child, node_value)
     return "The node has been successfully inserted"
 
-def preOrderTraversal(rootNode):
-    if not rootNode:
-        return
-    print(rootNode.data)
-    preOrderTraversal(rootNode.leftChild)
-    preOrderTraversal(rootNode.rightChild)
 
-def inOrderTraversal(rootNode):
-    if not rootNode:
+def pre_order_traversal(root_node):
+    """
+    Performs pre-order traversal of the BST.
+    """
+    if not root_node:
         return
-    inOrderTraversal(rootNode.leftChild)
-    print(rootNode.data)
-    inOrderTraversal(rootNode.rightChild)
+    print(root_node.data)
+    pre_order_traversal(root_node.left_child)
+    pre_order_traversal(root_node.right_child)
 
-def postOrderTraversal(rootNode):
-    if not rootNode:
-        return
-    postOrderTraversal(rootNode.leftChild)
-    postOrderTraversal(rootNode.rightChild)
-    print(rootNode.data)
 
-def levelOrderTraversal(rootNode):
-    if not rootNode:
+def in_order_traversal(root_node):
+    """
+    Performs in-order traversal of the BST.
+    """
+    if not root_node:
         return
+    in_order_traversal(root_node.left_child)
+    print(root_node.data)
+    in_order_traversal(root_node.right_child)
+
+
+def post_order_traversal(root_node):
+    """
+    Performs post-order traversal of the BST.
+    """
+    if not root_node:
+        return
+    post_order_traversal(root_node.left_child)
+    post_order_traversal(root_node.right_child)
+    print(root_node.data)
+
+
+def level_order_traversal(root_node):
+    """
+    Performs level-order traversal of the BST using a deque.
+    """
+    if not root_node:
+        return
+    queue = deque([root_node])
+    while queue:
+        root = queue.popleft()
+        print(root.data)
+        if root.left_child is not None:
+            queue.append(root.left_child)
+        if root.right_child is not None:
+            queue.append(root.right_child)
+
+
+def search_node(root_node, node_value):
+    """
+    Searches for a node with node_value in the BST.
+    """
+    if root_node is None:
+        return "Not found"
+    if root_node.data == node_value:
+        return "The value is found"
+    elif node_value < root_node.data:
+        return search_node(root_node.left_child, node_value)
     else:
-        customQueue = queue.Queue()
-        customQueue.enqueue(rootNode)
-        while not(customQueue.isEmpty()):
-            root = customQueue.dequeue()
-            print(root.value.data)
-            if root.value.leftChild is not None:
-                customQueue.enqueue(root.value.leftChild)
-            if root.value.rightChild is not None:
-                customQueue.enqueue(root.value.rightChild)
+        return search_node(root_node.right_child, node_value)
 
-def searchNode(rootNode, nodeValue):
-    if rootNode.data == nodeValue:
-        print("The value is found")
-    elif nodeValue < rootNode.data:
-        if rootNode.leftChild.data == nodeValue:
-            print("The value is found")
-        else:
-            searchNode(rootNode.leftChild, nodeValue)
-    else:
-        if rootNode.rightChild.data == nodeValue:
-            print("The value is found")
-        else:
-            searchNode(rootNode.rightChild, nodeValue)
 
-def minValueNode(bstNode):
-    current = bstNode
-    while (current.leftChild is not None):
-        current = current.leftChild
+def min_value_node(bst_node):
+    """
+    Finds the node with the minimum value in the BST.
+    """
+    current = bst_node
+    while current.left_child is not None:
+        current = current.left_child
     return current
 
-def deleteNode(rootNode, nodeValue):
-    if rootNode is None:
-        return rootNode
-    if nodeValue < rootNode.data:
-        rootNode.leftChild = deleteNode(rootNode.leftChild, nodeValue)
-    elif nodeValue > rootNode.data:
-        rootNode.rightChild = deleteNode(rootNode.rightChild, nodeValue)
+
+def delete_node(root_node, node_value):
+    """
+    Deletes a node with node_value from the BST.
+    """
+    if root_node is None:
+        return root_node
+    if node_value < root_node.data:
+        root_node.left_child = delete_node(root_node.left_child, node_value)
+    elif node_value > root_node.data:
+        root_node.right_child = delete_node(root_node.right_child, node_value)
     else:
-        if rootNode.leftChild is None:
-            temp = rootNode.rightChild
-            rootNode = None
+        if root_node.left_child is None:
+            temp = root_node.right_child
+            root_node = None
             return temp
-        if rootNode.rightChild is None:
-            temp = rootNode.leftChild
-            rootNode = None
+        if root_node.right_child is None:
+            temp = root_node.left_child
+            root_node = None
             return temp
 
-        temp = minValueNode(rootNode.rightChild)
-        rootNode.data = temp.data
-        rootNode.rightChild = deleteNode(rootNode.rightChild, temp.data)
-    return rootNode
+        temp = min_value_node(root_node.right_child)
+        root_node.data = temp.data
+        root_node.right_child = delete_node(root_node.right_child, temp.data)
+    return root_node
 
-def deleteBST(rootNode):
-    rootNode.data = None
-    rootNode.leftChild = None
-    rootNode.rightChild = None
+
+def delete_bst(root_node):
+    """
+    Deletes the entire BST.
+    """
+    root_node.data = None
+    root_node.left_child = None
+    root_node.right_child = None
     return "The BST has been successfully deleted"
 
 
+if __name__ == "__main__":
+    new_bst = BSTNode(None)
+    insert_node(new_bst, 40)
+    insert_node(new_bst, 70)
+    insert_node(new_bst, 30)
+    insert_node(new_bst, 50)
+    insert_node(new_bst, 60)
+    insert_node(new_bst, 80)
+    insert_node(new_bst, 20)
 
-newBST = BSTNode(None)
-print(insertNode(newBST, 40))
-print(insertNode(newBST, 70))
-insertNode(newBST, 30)
-insertNode(newBST, 50)
-insertNode(newBST, 60)
-insertNode(newBST, 80)
-insertNode(newBST, 90)
-insertNode(newBST, 20)
-insertNode(newBST, 10)
-insertNode(newBST, 100)
-print(newBST.data)
-print(newBST.rightChild.data)
-preOrderTraversal(newBST)
-inOrderTraversal(newBST)
-postOrderTraversal(newBST)
-levelOrderTraversal(newBST)
-searchNode(newBST, 60)
-deleteNode(newBST, 50)
-levelOrderTraversal(newBST)
+    print("Level Order Traversal:")
+    level_order_traversal(new_bst)
+
+    print(f"Search 60: {search_node(new_bst, 60)}")
+    delete_node(new_bst, 50)
+    print("Level Order Traversal after deleting 50:")
+    level_order_traversal(new_bst)

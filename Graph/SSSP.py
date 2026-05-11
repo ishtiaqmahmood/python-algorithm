@@ -1,29 +1,50 @@
+from collections import deque
+
 class Graph:
+    """
+    A class to represent a graph for Single Source Shortest Path (SSSP) using BFS.
+    """
     def __init__(self, gdict=None):
         if gdict is None:
             gdict = {}
         self.gdict = gdict
 
     def bfs(self, start, end):
-        queue = []
-        queue.append([start])
+        """
+        Finds the shortest path between start and end nodes using BFS.
+
+        Args:
+            start: The starting vertex.
+            end: The ending vertex.
+
+        Returns:
+            list: The shortest path from start to end.
+        """
+        queue = deque([[start]])
+        visited = {start}
+
         while queue:
-            path = queue.pop(0)
+            path = queue.popleft()
             node = path[-1]
             if node == end:
                 return path
             for adjacent in self.gdict.get(node, []):
-                newPath = list(path)
-                newPath.append(adjacent)
-                queue.append(newPath)
+                if adjacent not in visited:
+                    visited.add(adjacent)
+                    new_path = list(path)
+                    new_path.append(adjacent)
+                    queue.append(new_path)
 
-customDict = {"a" : ["b", "c"],
-              "b" : ["d", "g"],
-              "c" : ["d", "e"],
-              "d" : ["f"],
-              "e" : ["f"],
-              "g" : ["f"]
-              }
 
-g = Graph(customDict)
-print(g.bfs("a", "e"))
+if __name__ == "__main__":
+    custom_dict = {
+        "a": ["b", "c"],
+        "b": ["d", "g"],
+        "c": ["d", "e"],
+        "d": ["f"],
+        "e": ["f"],
+        "g": ["f"]
+    }
+
+    g = Graph(custom_dict)
+    print(f"Shortest path from 'a' to 'e': {g.bfs('a', 'e')}")

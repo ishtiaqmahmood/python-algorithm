@@ -1,7 +1,10 @@
 class Queue:
-    def __init__(self, maxSize):
-        self.items = maxSize * [None]
-        self.maxSize = maxSize
+    """
+    A class to represent a circular queue with a fixed capacity.
+    """
+    def __init__(self, max_size):
+        self.items = max_size * [None]
+        self.max_size = max_size
         self.start = -1
         self.top = -1
 
@@ -9,25 +12,43 @@ class Queue:
         values = [str(x) for x in self.items]
         return ' '.join(values)
 
-    def isFull(self):
+    def is_full(self):
+        """
+        Checks if the queue is full.
+
+        Returns:
+            bool: True if full, False otherwise.
+        """
         if self.top + 1 == self.start:
             return True
-        elif self.start == 0 and self.top + 1 == self.maxSize:
+        elif self.start == 0 and self.top + 1 == self.max_size:
             return True
         else:
             return False
 
-    def isEmpty(self):
-        if self.top == -1:
-            return True
-        else:
-            return False
+    def is_empty(self):
+        """
+        Checks if the queue is empty.
+
+        Returns:
+            bool: True if empty, False otherwise.
+        """
+        return self.top == -1
 
     def enqueue(self, value):
-        if self.isFull():
+        """
+        Adds an element to the end of the queue.
+
+        Args:
+            value: The value to be added.
+
+        Returns:
+            str: A message indicating the result.
+        """
+        if self.is_full():
             return "The queue is full"
         else:
-            if self.top + 1 == self.maxSize:
+            if self.top + 1 == self.max_size:
                 self.top = 0
             else:
                 self.top += 1
@@ -37,42 +58,56 @@ class Queue:
             return "The element is inserted at the end of Queue"
 
     def dequeue(self):
-        if self.isEmpty():
+        """
+        Removes and returns the element at the front of the queue.
+
+        Returns:
+            The value removed from the front.
+        """
+        if self.is_empty():
             return "There is not any element in the Queue"
         else:
-            firstElement = self.items[self.start]
+            first_element = self.items[self.start]
             start = self.start
             if self.start == self.top:
                 self.start = -1
                 self.top = -1
-            elif self.start + 1 == self.maxSize:
+            elif self.start + 1 == self.max_size:
                 self.start = 0
             else:
                 self.start += 1
             self.items[start] = None
-            return firstElement
+            return first_element
 
     def peek(self):
-        if self.isEmpty():
+        """
+        Returns the element at the front of the queue without removing it.
+
+        Returns:
+            The value at the front.
+        """
+        if self.is_empty():
             return "There is not any element in the Queue"
         else:
             return self.items[self.start]
 
     def delete(self):
-        self.items = self.maxSize * [None]
+        """
+        Deletes the entire queue.
+        """
+        self.items = self.max_size * [None]
         self.top = -1
         self.start = -1
-        
 
 
-
-
-
-customQueue = Queue(3)
-customQueue.enqueue(1)
-customQueue.enqueue(2)
-customQueue.enqueue(3)
-customQueue.dequeue()
-customQueue.enqueue(4)
-customQueue.dequeue()
-print(customQueue)
+if __name__ == "__main__":
+    custom_queue = Queue(3)
+    custom_queue.enqueue(1)
+    custom_queue.enqueue(2)
+    custom_queue.enqueue(3)
+    print(custom_queue)
+    custom_queue.dequeue()
+    custom_queue.enqueue(4)
+    print(custom_queue)
+    custom_queue.dequeue()
+    print(custom_queue)

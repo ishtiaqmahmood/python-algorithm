@@ -1,13 +1,23 @@
 def power(base, exp):
-    assert exp >= 0 and int(exp) == exp, 'The exponentmust be positive integer'
+    """
+    Computes the power of a number.
+
+    Args:
+        base (int or float): The base number.
+        exp (int): The non-negative integer exponent.
+
+    Returns:
+        int or float: The result of base raised to the power of exp.
+    """
+    assert exp >= 0 and int(exp) == exp, 'The exponent must be positive integer'
     if exp == 0:
         return 1
     if exp == 1:
         return base
     else:
-        return base * (base * exp-1)
+        return base * power(base, exp - 1)
 
-base = int(input('Enter the base: '))
-exp = int(input('Enter the exponent: '))
-
-print(power(base,exp))
+if __name__ == "__main__":
+    test_base = 2
+    test_exp = 4
+    print(f"{test_base} raised to the power of {test_exp} is {power(test_base, test_exp)}")

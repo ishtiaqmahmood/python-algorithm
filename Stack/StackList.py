@@ -1,47 +1,79 @@
 class Stack:
+    """
+    A class to represent a stack using a Python list.
+    """
     def __init__(self):
         self.list = []
 
     def __str__(self):
-        values = self.list.reverse()
-        values = (str(x) for x in self.list)
+        if self.list is None:
+            return ""
+        # Create a copy and reverse it for display
+        values = self.list[::-1]
+        values = [str(x) for x in values]
         return '\n'.join(values)
 
-    # isEmpty
-    def isEmpty(self):
-        if self.list == []:
-            return True
-        else:
-            return False
+    def is_empty(self):
+        """
+        Checks if the stack is empty.
 
-    # push
+        Returns:
+            bool: True if empty, False otherwise.
+        """
+        return self.list == []
+
     def push(self, value):
+        """
+        Adds an element to the top of the stack.
+
+        Args:
+            value: The value to be added.
+
+        Returns:
+            str: A success message.
+        """
         self.list.append(value)
         return "The element is successfully inserted"
 
-    # pop
     def pop(self):
-        if self.isEmpty():
+        """
+        Removes and returns the element at the top of the stack.
+
+        Returns:
+            The value removed from the top.
+        """
+        if self.is_empty():
             return "There is not any element in the Stack"
         else:
             return self.list.pop()
 
-    # peek
     def peek(self):
-        if self.isEmpty():
+        """
+        Returns the element at the top of the stack without removing it.
+
+        Returns:
+            The value at the top.
+        """
+        if self.is_empty():
             return "There is not any element in the Stack"
         else:
-            return self.list[len(self.list)-1]
+            return self.list[len(self.list) - 1]
 
-    # delete
     def delete(self):
-        self.list = None
+        """
+        Deletes the entire stack.
+        """
+        self.list = []
 
 
-customStack = Stack()
-customStack.push(1)
-customStack.push(2)
-customStack.push(3)
-customStack.pop()
-print(customStack.peek())
-print(customStack)
+if __name__ == "__main__":
+    custom_stack = Stack()
+    custom_stack.push(1)
+    custom_stack.push(2)
+    custom_stack.push(3)
+    print(f"Popped: {custom_stack.pop()}")
+    print(f"Peek: {custom_stack.peek()}")
+    print("Stack contents:")
+    print(custom_stack)
+    custom_stack.delete()
+    print(f"Stack after delete: {custom_stack}")
