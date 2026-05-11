@@ -1,61 +1,86 @@
 class Stack:
-    def __init__(self, maxSize):
-        self.maxSize = maxSize
+    """
+    A class to represent a stack with a maximum capacity.
+    """
+    def __init__(self, max_size):
+        self.max_size = max_size
         self.list = []
 
     def __str__(self):
-        values = self.list.reverse()
-        values = (str(x) for x in self.list)
+        values = self.list[::-1]
+        values = [str(x) for x in values]
         return '\n'.join(values)
 
-    # isEmpty
-    def isEmpty(self):
-        if self.list == []:
-            return True
-        else:
-            return False
+    def is_empty(self):
+        """
+        Checks if the stack is empty.
 
-    # isFull
-    def isFull(self):
-        if len(self.list) == self.maxSize:
-            return True
-        else:
-            return False
+        Returns:
+            bool: True if empty, False otherwise.
+        """
+        return self.list == []
 
-    # push
+    def is_full(self):
+        """
+        Checks if the stack is full.
+
+        Returns:
+            bool: True if full, False otherwise.
+        """
+        return len(self.list) == self.max_size
+
     def push(self, value):
-        if self.isFull():
+        """
+        Adds an element to the top of the stack if it's not full.
+
+        Args:
+            value: The value to be added.
+
+        Returns:
+            str: A message indicating the result.
+        """
+        if self.is_full():
             return "The stack is full"
         else:
             self.list.append(value)
-            return "The element is successfully inserted"
+            return "The element has been successfully inserted"
 
-    # pop
     def pop(self):
-        if self.isEmpty():
-            return "There is not any element in the Stack"
-        else:
-            self.list.pop()
+        """
+        Removes and returns the element at the top of the stack.
 
-    # peek
+        Returns:
+            The value removed from the top.
+        """
+        if self.is_empty():
+            return "There is not any element in the stack"
+        else:
+            return self.list.pop()
+
     def peek(self):
-        if self.isEmpty():
-            return "There is not any element in the Stack"
+        """
+        Returns the element at the top of the stack without removing it.
+
+        Returns:
+            The value at the top.
+        """
+        if self.is_empty():
+            return "There is not any element in the stack"
         else:
             return self.list[len(self.list) - 1]
 
-    # delete
     def delete(self):
-        self.list = None
+        """
+        Deletes the entire stack.
+        """
+        self.list = []
 
 
-customStack = Stack(4)
-print(customStack.isEmpty())
-print(customStack.isFull())
-customStack.push(1)
-customStack.push(2)
-customStack.push(3)
-customStack.pop()
-print(customStack.peek())
-customStack.delete()
-print(customStack)
+if __name__ == "__main__":
+    custom_stack = Stack(4)
+    print(f"Is empty: {custom_stack.is_empty()}")
+    print(f"Is full: {custom_stack.is_full()}")
+    custom_stack.push(1)
+    custom_stack.push(2)
+    custom_stack.push(3)
+    print(custom_stack)

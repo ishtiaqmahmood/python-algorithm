@@ -1,165 +1,190 @@
-import QueueLinkedList as queue
+from collections import deque
 
 class TreeNode:
+    """
+    A class to represent a node in a Binary Tree.
+    """
     def __init__(self, data):
         self.data = data
-        self.leftChild = None
-        self.rightChild = None
+        self.left_child = None
+        self.right_child = None
 
-newBT = TreeNode("Drinks")
-leftChild = TreeNode("Hot")
-tea = TreeNode("Tea")
-coffee = TreeNode("Coffee")
-leftChild.leftChild = tea
-leftChild.rightChild  = coffee
-rightChild = TreeNode("Cold")
-newBT.leftChild = leftChild
-newBT.rightChild = rightChild
 
-def preOrderTraversal(rootNode):
-    if not rootNode:
+def pre_order_traversal(root_node):
+    """
+    Performs pre-order traversal of the Binary Tree.
+    """
+    if not root_node:
         return
-    print(rootNode.data)
-    preOrderTraversal(rootNode.leftChild)
-    preOrderTraversal(rootNode.rightChild)
+    print(root_node.data)
+    pre_order_traversal(root_node.left_child)
+    pre_order_traversal(root_node.right_child)
 
-def inOrderTraversal(rootNode):
-    if not rootNode:
+
+def in_order_traversal(root_node):
+    """
+    Performs in-order traversal of the Binary Tree.
+    """
+    if not root_node:
         return
-    inOrderTraversal(rootNode.leftChild)
-    print(rootNode.data)
-    inOrderTraversal(rootNode.rightChild)
+    in_order_traversal(root_node.left_child)
+    print(root_node.data)
+    in_order_traversal(root_node.right_child)
 
-def postOrderTraversal(rootNode):
-    if not rootNode:
+
+def post_order_traversal(root_node):
+    """
+    Performs post-order traversal of the Binary Tree.
+    """
+    if not root_node:
         return
-    postOrderTraversal(rootNode.leftChild)
-    postOrderTraversal(rootNode.rightChild)
-    print(rootNode.data)
+    post_order_traversal(root_node.left_child)
+    post_order_traversal(root_node.right_child)
+    print(root_node.data)
 
-def levelOrderTraversal(rootNode):
-    if not rootNode:
+
+def level_order_traversal(root_node):
+    """
+    Performs level-order traversal of the Binary Tree using a deque.
+    """
+    if not root_node:
         return
-    else:
-        customQueue = queue.Queue()
-        customQueue.enqueue(rootNode)
-        while not(customQueue.isEmpty()):
-            root = customQueue.dequeue()
-            print(root.value.data)
-            if (root.value.leftChild is not None):
-                customQueue.enqueue(root.value.leftChild)
-            if (root.value.rightChild is not None):
-                customQueue.enqueue(root.value.rightChild)
+    queue = deque([root_node])
+    while queue:
+        root = queue.popleft()
+        print(root.data)
+        if root.left_child is not None:
+            queue.append(root.left_child)
+        if root.right_child is not None:
+            queue.append(root.right_child)
 
-def searchBT(rootNode, nodeValue):
-    if not rootNode:
+
+def search_bt(root_node, node_value):
+    """
+    Searches for a node with node_value in the Binary Tree.
+    """
+    if not root_node:
         return "The BT does not exist"
-    else:
-        customQueue = queue.Queue()
-        customQueue.enqueue(rootNode)
-        while not(customQueue.isEmpty()):
-            root = customQueue.dequeue()
-            if root.value.data == nodeValue:
-                return "Success"
-            if (root.value.leftChild is not None):
-                customQueue.enqueue(root.value.leftChild)
-            if (root.value.rightChild is not None):
-                customQueue.enqueue(root.value.rightChild)
-        return "Not found"
+    queue = deque([root_node])
+    while queue:
+        root = queue.popleft()
+        if root.data == node_value:
+            return "Success"
+        if root.left_child is not None:
+            queue.append(root.left_child)
+        if root.right_child is not None:
+            queue.append(root.right_child)
+    return "Not found"
 
-def insertNodeBT(rootNode, newNode):
-    if not rootNode:
-        rootNode = newNode
-    else:
-        customQueue = queue.Queue()
-        customQueue.enqueue(rootNode)
-        while not(customQueue.isEmpty()):
-            root = customQueue.dequeue()
-            if root.value.leftChild is not None:
-                customQueue.enqueue(root.value.leftChild)
-            else:
-                root.value.leftChild = newNode
-                return "Successfully Inserted"
-            if root.value.rightChild is not None:
-                customQueue.enqueue(root.value.rightChild)
-            else:
-                root.value.rightChild = newNode
-                return "Successfully Inserted"
 
-def getDeepestNode(rootNode):
-    if not rootNode:
+def insert_node_bt(root_node, new_node):
+    """
+    Inserts a node into the Binary Tree at the first available position.
+    """
+    if not root_node:
+        return new_node
+    queue = deque([root_node])
+    while queue:
+        root = queue.popleft()
+        if root.left_child is not None:
+            queue.append(root.left_child)
+        else:
+            root.left_child = new_node
+            return "Successfully Inserted"
+        if root.right_child is not None:
+            queue.append(root.right_child)
+        else:
+            root.right_child = new_node
+            return "Successfully Inserted"
+
+
+def get_deepest_node(root_node):
+    """
+    Returns the deepest node in the Binary Tree.
+    """
+    if not root_node:
+        return None
+    queue = deque([root_node])
+    root = None
+    while queue:
+        root = queue.popleft()
+        if root.left_child is not None:
+            queue.append(root.left_child)
+        if root.right_child is not None:
+            queue.append(root.right_child)
+    return root
+
+
+def delete_deepest_node(root_node, d_node):
+    """
+    Deletes the given deepest node from the Binary Tree.
+    """
+    if not root_node:
         return
-    else:
-        customQueue = queue.Queue()
-        customQueue.enqueue(rootNode)
-        while not(customQueue.isEmpty()):
-            root = customQueue.dequeue()
-            if (root.value.leftChild is not None):
-                customQueue.enqueue(root.value.leftChild)
-            if (root.value.rightChild is not None):
-                customQueue.enqueue(root.value.rightChild)
-        depestNode = root.value
-        return depestNode
-
-def deleteDeepestNode(rootNode, dNode):
-    if not rootNode:
-        return
-    else:
-        customQueue = queue.Queue()
-        customQueue.enqueue(rootNode)
-        while not(customQueue.isEmpty()):
-            root = customQueue.dequeue()
-            if root.value is dNode:
-                root.value = None
+    queue = deque([root_node])
+    while queue:
+        root = queue.popleft()
+        if root is d_node:
+            root = None
+            return
+        if root.right_child:
+            if root.right_child is d_node:
+                root.right_child = None
                 return
-            if root.value.rightChild:
-                if root.value.rightChild is dNode:
-                    root.value.rightChild = None
-                    return
-                else:
-                    customQueue.enqueue(root.value.rightChild)
-            if root.value.leftChild:
-                if root.value.leftChild is dNode:
-                    root.value.leftChild = None
-                    return
-                else:
-                    customQueue.enqueue(root.value.leftChild)
+            else:
+                queue.append(root.right_child)
+        if root.left_child:
+            if root.left_child is d_node:
+                root.left_child = None
+                return
+            else:
+                queue.append(root.left_child)
 
-def deleteNodeBT(rootNode, node):
-    if not rootNode:
+
+def delete_node_bt(root_node, node_data):
+    """
+    Deletes a node with node_data from the Binary Tree.
+    """
+    if not root_node:
         return "The BT does not exist"
-    else:
-        customQueue = queue.Queue()
-        customQueue.enqueue(rootNode)
-        while not(customQueue.isEmpty()):
-            root = customQueue.dequeue()
-            if root.value.data == node:
-                dNode = getDeepestNode(rootNode)
-                root.value.data = dNode.data
-                deleteDeepestNode(rootNode, dNode)
-                return "The node has been successfully deleted"
-            if (root.value.leftChild is not None):
-                customQueue.enqueue(root.value.leftChild)
-            if (root.value.rightChild is not None):
-                customQueue.enqueue(root.value.rightChild)
-        return "Failed to delete"
+    queue = deque([root_node])
+    while queue:
+        root = queue.popleft()
+        if root.data == node_data:
+            d_node = get_deepest_node(root_node)
+            root.data = d_node.data
+            delete_deepest_node(root_node, d_node)
+            return "The node has been successfully deleted"
+        if root.left_child is not None:
+            queue.append(root.left_child)
+        if root.right_child is not None:
+            queue.append(root.right_child)
+    return "Failed to delete"
 
-def deleteBT(rootNode):
-    rootNode.data = None
-    rootNode.leftChild = None
-    rootNode.rightChild = None
+
+def delete_bt(root_node):
+    """
+    Deletes the entire Binary Tree.
+    """
+    root_node.data = None
+    root_node.left_child = None
+    root_node.right_child = None
     return "The BT has been successfully deleted"
 
-#print(searchBT(newBT, "Hot"))
-#newNode = TreeNode("Cola")
-#print(insertNodeBT(newBT, newNode))
-#levelOrderTraversal(newBT)
-#deepestNode = getDeepestNode(newBT)
-#print(deepestNode.data)
 
-#newNode = getDeepestNode(newBT)
-#deleteDeepestNode(newBT, newNode)
-#levelOrderTraversal(newBT)
+if __name__ == "__main__":
+    new_bt = TreeNode("Drinks")
+    left_child = TreeNode("Hot")
+    right_child = TreeNode("Cold")
+    new_bt.left_child = left_child
+    new_bt.right_child = right_child
 
-deleteNodeBT(newBT, "Hot")
-levelOrderTraversal(newBT)
+    insert_node_bt(new_bt, TreeNode("Tea"))
+    insert_node_bt(new_bt, TreeNode("Coffee"))
+
+    print("Level Order Traversal:")
+    level_order_traversal(new_bt)
+
+    delete_node_bt(new_bt, "Hot")
+    print("Level Order Traversal after deleting 'Hot':")
+    level_order_traversal(new_bt)
